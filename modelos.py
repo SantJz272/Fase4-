@@ -16,6 +16,8 @@ from excepciones import (
 )
 
 
+# Clase base abstracta para todas las entidades del sistema.
+# Toda entidad debe poseer un identificador unico y una descripcion resumida.
 class Entity(ABC):
     """Clase abstracta común con identificador y método resumen obligatorio."""
 
@@ -37,6 +39,8 @@ class Entity(ABC):
         """Obliga a cada clase concreta a definir una descripción corta."""
 
 
+# Representa a una persona que puede reservar servicios del sistema.
+# Las propiedades validan nombre, correo y teléfono antes de guardar la informacion.
 class Cliente(Entity):
     """Cliente cuyos datos personales se consultan y validan mediante propiedades."""
 
@@ -109,6 +113,9 @@ class Cliente(Entity):
         return f"{self.identificador} - {self.nombre} ({self.correo})"
 
 
+# Clase abstracta para todos los servicios ofertados por la empresa.
+# Define la logica comun de validacion, calculo de tarfa y presentacion,
+# dejando a cada subclase su comportamiento particular.
 class Servicio(Entity, ABC):
     """Clase abstracta para los servicios; concentra reglas compartidas."""
 
@@ -189,9 +196,8 @@ class Servicio(Entity, ABC):
         return self.describir()
 
 
-Service = Servicio
-
-
+# Servicio concreto para alquiler de salas.
+# Permite reservar espacio por horas y valida la capacidad maxima permitida.
 class ReservaSala(Servicio):
     """Servicio concreto que alquila salas por hora y controla su capacidad."""
 
@@ -250,6 +256,8 @@ class ReservaSala(Servicio):
         )
 
 
+# Servicio concreto para alquiler de equipos.
+# Se calcula por dias y controla cuantas unidades disponibles hay para prestar.
 class AlquilerEquipo(Servicio):
     """Servicio concreto de alquiler diario con control de existencias."""
 
@@ -311,6 +319,8 @@ class AlquilerEquipo(Servicio):
         )
 
 
+# Servicio concreto de asesoria profesional.
+# Se ofrece por horas y se diferencia por la especialidad del experto.
 class Asesoria(Servicio):
     """Servicio concreto de asesoría con especialidad y tarifa por hora."""
 
@@ -354,6 +364,8 @@ class Asesoria(Servicio):
         )
 
 
+# Representa la operacion de reservar un servicio por parte de un cliente.
+# Controla el flujo de estados, el calculo del costo y la validacion del servicio.
 class Reserva(Entity):
     """Reserva que relaciona un cliente, un servicio y un estado de atención."""
 
@@ -437,6 +449,3 @@ class Reserva(Entity):
             f"{self.identificador} | {self.cliente.nombre} | "
             f"{self.servicio.nombre} | {self.estado} | {costo}"
         )
-
-
-Reservation = Reserva
